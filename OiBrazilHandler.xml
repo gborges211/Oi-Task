@@ -1,0 +1,1034 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+****************************************************************************
+*  Copyright (c) 2019,  Skyline Communications NV  All Rights Reserved.    *
+****************************************************************************
+
+By using this driver, you expressly agree with the usage terms and
+conditions set out below.
+This driver and all related materials are protected by copyrights and
+other intellectual property rights that exclusively belong
+to Skyline Communications.
+
+A user license granted for this driver is strictly for personal use only.
+This driver may not be used in any way by anyone without the prior
+written consent of Skyline Communications. Any sublicensing of this
+driver is forbidden.
+
+Any modifications to this driver by the user are only allowed for
+personal use and within the intended purpose of the driver,
+and will remain the sole responsibility of the user.
+Skyline Communications will not be responsible for any damages or
+malfunctions whatsoever of the driver resulting from a modification
+or adaptation by the user.
+
+The content of this driver is confidential information.
+The user hereby agrees to keep this confidential information strictly
+secret and confidential and not to disclose or reveal it, in whole
+or in part, directly or indirectly to any person, entity, organization
+or administration without the prior written consent of
+Skyline Communications.
+
+Any inquiries can be addressed to:
+
+	Skyline Communications NV
+	Ambachtenstraat 33
+	B-8870 Izegem
+	Belgium
+	Tel.	: +32 51 31 35 69
+	Fax.	: +32 51 31 01 29
+	E-mail	: info@skyline.be
+	Web		: www.skyline.be
+	Contact	: Ben Vandenberghe
+
+****************************************************************************
+Revision History:
+
+DATE		VERSION		AUTHOR			COMMENTS
+
+10/09/2019	1.0.0.1		GBO, Skyline	Initial Version
+****************************************************************************
+
+-->
+
+<Protocol xmlns="http://www.skyline.be/protocol">
+	<Name>DSLAM Record Handler</Name>
+	<Description>Application for the dynamic provisioning of DSLAM records</Description>
+	<Version>1.0.0.1</Version>
+	<IntegrationID>DMS-DRV-6427</IntegrationID>
+	<Provider>Skyline Communications</Provider>
+	<Vendor>Oi Brazil</Vendor>
+	<VendorOID>1.3.6.1.4.1.8813.2.870</VendorOID>
+	<DeviceOID>1234</DeviceOID>
+	<ElementType>Report Creator</ElementType>
+	<Type relativeTimers="true" options="">http</Type>
+	<Display defaultPage="General" pageOrder="General" wideColumnPages=""/>
+	<SNMP includepages="true">auto</SNMP>
+	<App type="Verizon DM Tools"/>
+
+  <Params>
+		<Param id="2" trending="false">
+			<Name>listener</Name>
+			<Description>Listener</Description>
+			<Information>
+				<Includes>
+					<Include>time</Include>
+					<Include>range</Include>
+					<Include>steps</Include>
+					<Include>units</Include>
+				</Includes>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>1</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="3" setter="true">
+			<Name>listener</Name>
+			<Description>Listener</Description>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>1</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="4" trending="false">
+			<Name>statusWaitTime</Name>
+			<Description>Status Wait Time</Description>
+			<Information>
+				<Includes>
+					<Include>time</Include>
+					<Include>range</Include>
+					<Include>steps</Include>
+					<Include>units</Include>
+				</Includes>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+				<DefaultValue>3</DefaultValue>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>s</Units>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>2</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="5" trending="false">
+			<Name>statusCheckRetries</Name>
+			<Description>Status Check Retries</Description>
+			<Information>
+				<Includes>
+					<Include>time</Include>
+					<Include>range</Include>
+					<Include>steps</Include>
+					<Include>units</Include>
+				</Includes>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+				<DefaultValue>3</DefaultValue>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>3</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="6" trending="false">
+			<Name>autoClear</Name>
+			<Description>Auto Clear</Description>
+			<Information>
+				<Includes>
+					<Include>time</Include>
+					<Include>range</Include>
+					<Include>steps</Include>
+					<Include>units</Include>
+				</Includes>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+				<DefaultValue>60</DefaultValue>
+				<!--<DefaultValue>2592000</DefaultValue>-->
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>4</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="time">number</Type>
+			</Measurement>
+		</Param>
+		<Param id="7" trending="false">
+			<Name>provisioningFilePath</Name>
+			<Description>Provisioning File Path</Description>
+			<Information>
+				<Includes>
+					<Include>time</Include>
+					<Include>range</Include>
+					<Include>steps</Include>
+					<Include>units</Include>
+				</Includes>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+				<DefaultValue>C:\Skyline DataMiner\Documents\Oi Brazil DSLAM Collector\OBDC</DefaultValue>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>5</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="8" trending="false">
+			<Name>titleGroupBoxBegin</Name>
+			<Description>Overview</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>0</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="begin;connect">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="9" trending="false">
+			<Name>titleGroupBoxEnd</Name>
+			<Description></Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>6</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="end;connect">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="10">
+			<Name>dslamRHBacklog</Name>
+			<Description>DSLAM RH Backlog</Description>
+			<Type>array</Type>
+			<ArrayOptions index="0">
+				<ColumnOption idx="0" pid="11" type="autoincrement" options=""/>
+				<ColumnOption idx="1" pid="12" type="retrieved" options=""/>
+				<ColumnOption idx="2" pid="13" type="retrieved" options=""/>
+				<ColumnOption idx="3" pid="14" type="retrieved" options=""/>
+				<ColumnOption idx="4" pid="15" type="retrieved" options=""/>
+				<ColumnOption idx="5" pid="16" type="retrieved" options=""/>
+				<ColumnOption idx="6" pid="17" type="retrieved" options=""/>
+			</ArrayOptions>
+			<Information>
+				<Subtext>tableInformation</Subtext>
+			</Information>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>7</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="tab=columns:11|0-12|1-13|2-14|3-15|4-16|5-17|6,width:100-100-100-100-100-100-100,sort:STRING-STRING-STRING-STRING-INT-STRING-STRING,lines:25,filter:true">table</Type>
+			</Measurement>
+		</Param>
+		<Param id="11" trending="false">
+			<Name>dslamRHBacklogInstance</Name>
+			<Description>Index</Description>
+			<Information>
+				<Subtext>This is the key used internally by DataMiner to identify the table entries.</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="12" trending="false">
+			<Name>sessionID</Name>
+			<Description>Session ID</Description>
+			<Information>
+				<Includes>
+					<Include>time</Include>
+					<Include>range</Include>
+					<Include>steps</Include>
+					<Include>units</Include>
+				</Includes>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="13" trending="false">
+			<Name>message</Name>
+			<Description>Message</Description>
+			<Information>
+				<Includes>
+					<Include>time</Include>
+					<Include>range</Include>
+					<Include>steps</Include>
+					<Include>units</Include>
+				</Includes>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="14" trending="false">
+			<Name>username</Name>
+			<Description>Username</Description>
+			<Information>
+				<Includes>
+					<Include>time</Include>
+					<Include>range</Include>
+					<Include>steps</Include>
+					<Include>units</Include>
+				</Includes>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="15" trending="false">
+			<Name>executionTime</Name>
+			<Description>Execution Time</Description>
+			<Information>
+				<Includes>
+					<Include>time</Include>
+					<Include>range</Include>
+					<Include>steps</Include>
+					<Include>units</Include>
+				</Includes>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+				<Decimals>8</Decimals>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type options="datetime">number</Type>
+			</Measurement>
+		</Param>
+		<Param id="16" trending="false">
+			<Name>status</Name>
+			<Description>Status</Description>
+			<Information>
+				<Includes>
+					<Include>time</Include>
+					<Include>range</Include>
+					<Include>steps</Include>
+					<Include>units</Include>
+				</Includes>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="17" trending="false">
+			<Name>result</Name>
+			<Description>Result</Description>
+			<Information>
+				<Includes>
+					<Include>time</Include>
+					<Include>range</Include>
+					<Include>steps</Include>
+					<Include>units</Include>
+				</Includes>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="18">
+			<Name>testButton</Name>
+			<Description></Description>
+			<Information>
+			</Information>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>8</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type width="110">button</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Delete</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="19">
+			<Name>clear</Name>
+			<Description></Description>
+			<Information>
+			</Information>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>9</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type width="110">button</Type>
+				<Discreets>
+					<Discreet>
+						<Display>clear</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+	</Params>
+
+  <QActions>
+	  <QAction id="1" name="jsonConvert" encoding="csharp" triggers="3" dllImport="Newtonsoft.Json.dll;System.Xml.Linq.dll;System.Data.dll">
+		  <![CDATA[using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using Skyline.DataMiner.Scripting;
+using System.Linq;
+using System.Data;
+using System.Data.OleDb;
+using System.IO;
+
+/// <summary>
+/// DataMiner QAction Class: jsonConvert.
+/// </summary>
+public class QAction
+{
+	/// <summary>
+	/// The QAction entry point.
+	/// </summary>
+	/// <param name="protocol">Link with SLProtocol process.</param>
+	public static void Run(SLProtocol protocol)
+	{
+		uint[] paramsToGet = new uint[] { Parameter.listener};
+		object listener = protocol.GetParameters(paramsToGet[0]);
+		String jsonListener = Convert.ToString(listener);
+		try
+		{
+			//RootObject root = JsonConvert.DeserializeObject<RootObject>(jsonListener);
+			//Entity[] entities = root.data.entities.ToArray();
+			char[] delimeters = { ' ', ',' };
+			string[] tokens = jsonListener.Split(delimeters);
+
+			if(tokens[0].Equals("add"))
+			{
+				string name = tokens[1];
+				string input = jsonListener.Substring(3);
+
+				File.AppendAllText("C: \\Users\\GabrielBO\\Desktop\\DMAID_EID_OBDC.csv", input);
+			}
+
+			else if (tokens[0].Equals("update"))
+			{
+				string name = tokens[1];
+				string input = jsonListener.Substring(6);
+				List<string> fileInfo = new List<string>();
+				foreach (var line in CSVImport.GetFileData("C: \\Users\\GabrielBO\\Desktop", "DMAID_EID_OBDC.csv"))
+				{
+					string[] Cells = CSVImport.SplitCSVRow(line);
+
+					if (name.Equals(Cells[0]))
+					{
+						fileInfo.Add(input);
+					}
+
+					else
+					{
+						fileInfo.Add(line);
+					}
+				}
+
+				File.WriteAllLines("C: \\Users\\GabrielBO\\Desktop\\DMAID_EID_OBDC.csv", fileInfo);
+			}
+
+			else if (tokens[0].Equals("delete"))
+			{
+				string name = tokens[1];
+				List<string> fileInfo = new List<string>();
+				foreach (string line in CSVImport.GetFileData("C: \\Users\\GabrielBO\\Desktop", "DMAID_EID_OBDC.csv"))
+				{
+					string[] Cells = CSVImport.SplitCSVRow(line);
+
+					if (!name.Equals(Cells[0]))
+					{
+						fileInfo.Add(line);
+					}
+				}
+
+				File.WriteAllLines("C: \\Users\\GabrielBO\\Desktop\\DMAID_EID_OBDC.csv", fileInfo);
+			}
+
+			else
+			{
+				DateTime now = DateTime.Now;
+				object[] row = new DslamrhbacklogQActionRow
+				{
+					Sessionid = tokens[0],
+					Message = "test",
+					Username = "test",
+					Executiontime = now.ToOADate(),
+					Status = "completed",
+					Result = "test"
+				};
+
+				protocol.AddRow(Parameter.Dslamrhbacklog.tablePid, row);
+			}
+
+
+			//foreach (var line in CSVImport.GetFileData("C: \\Users\\GabrielBO\\Desktop", "DMAID_EID_OBDC.csv"))
+			//{
+			//	object[] Row = null;
+
+			//	Row = new object[10];
+
+			//	string[] Cells = CSVImport.SplitCSVRow(line);
+			//}
+
+		}
+		catch (Exception ex)
+		{
+			protocol.Log("QA" + protocol.QActionID + "|" + protocol.GetTriggerParameter() + "|Run|Exception thrown:" + Environment.NewLine + ex, LogType.Error, LogLevel.NoLogging);
+		}
+	}
+}
+
+public class Converters
+{
+	/// <summary>
+	/// Use when in normal behaviour the convert can fail as well as succeed. The Fail is in this case no 'Exception'
+	/// TryParse is used so it will be processed a bit "slower" than Convert in case it's succeeded
+	/// </summary>
+	/// <param name="obj">The object to parse</param>
+	/// <param name="dValue">the double Value</param>
+	/// <returns>false if fails</returns>
+	public static bool TryParseToInvariantDouble(object obj, out double dValue)
+	{
+		if (obj.GetType() == typeof(string))
+		{ obj = Convert.ToString(obj).Replace(",", "."); }
+
+		return Double.TryParse(Convert.ToString(obj, CultureInfo.InvariantCulture), System.Globalization.NumberStyles.Any, NumberFormatInfo.InvariantInfo, out dValue);
+
+	}
+
+	/// <summary>
+	/// Use when in normal behaviour the convert will work. Only in 'Exception' it will fail.
+	/// Try-Catch is used so when it fails it will be processed "slower" than the Parse.
+	/// </summary>
+	/// <param name="obj">The object to convert</param>
+	/// <param name="dValue">The double Value</param>
+	/// <returns>false if function fails</returns>
+	public static bool TryConvertToInvariantDouble(object obj, out double dValue)
+	{
+
+		if (obj.GetType() == typeof(string))
+		{ obj = Convert.ToString(obj).Replace(",", "."); }
+
+		try
+		{
+			dValue = Convert.ToDouble(obj, CultureInfo.InvariantCulture);
+			return true;
+		}
+		catch (Exception)
+		{
+			dValue = 0;
+			return false;
+		}
+	}
+
+	/// <summary>
+	/// Use when in normal behaviour the convert will work. Only in 'Exception' it will fail.
+	/// Try-Catch is used so when it fails it will be processed "slower" than the Parse.
+	/// </summary>
+	/// <param name="obj">The object to convert</param>
+	/// <param name="dValue">The double Value</param>
+	/// <param name="exception">The exception that was thrown when the Convert failed</param>
+	/// <returns>false if function fails</returns>
+	public static bool TryConvertToInvariantDouble(object obj, out double dValue, out Exception exception)
+	{
+
+		if (obj.GetType() == typeof(string))
+		{ obj = Convert.ToString(obj).Replace(",", "."); }
+
+		try
+		{
+			dValue = Convert.ToDouble(obj, CultureInfo.InvariantCulture);
+			exception = null;
+			return true;
+		}
+		catch (System.Exception e)
+		{
+			dValue = 0;
+			exception = e;
+			return false;
+		}
+	}
+}
+
+
+public class CSVImport
+{
+
+	/// <summary>
+	/// read all the rows in the CSV
+	/// </summary>
+	/// <param name="Path">Path of the csv file</param>
+	/// <param name="FileName">Name of the csv file</param>
+	/// <returns>list of all the rows in the csv</returns>
+	public static IEnumerable<string> GetFileData(string Path, string FileName)
+	{
+		List<string> AllLines = new List<string>();
+		FileName = FileName.Substring(0, FileName.LastIndexOf('.')) + ".csv";
+		string Location = Path + "\\" + FileName;
+		if (System.IO.File.Exists(Location))
+		{
+			//make sure it can be opened even if its used by another process
+			using (System.IO.FileStream logReader = new FileStream(Location, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+			{
+				//read the file with encoding => used for chars like 'é'
+				using (StreamReader sr = new StreamReader(logReader, System.Text.Encoding.Default))
+				{
+					while (!sr.EndOfStream)
+					{
+						yield return sr.ReadLine();
+						//AllLines.Add(sr.ReadLine()); 
+					}
+				}
+			}
+		}
+		//	return AllLines;
+	}
+	/// <summary>
+	/// splits the columns in the csv independed of ';' or ',' separator
+	/// </summary>
+	/// <param name="Row">the row</param>
+	/// <param name="separator">the used separator</param>
+	/// <returns>array of column data in the row</returns>
+	public static string[] SplitCSVRow(string Row)
+	{
+		//detect the column separator
+		char separator = GetUsedSeparator(Row);
+		string[] Values = ParseLine(Row, separator);
+
+		return Values;
+	}
+	public static char GetUsedSeparator(string Row)
+	{
+		char separator = ';';
+		if (Row.Count(c => c == ';') > Row.Count(c => c == ','))
+			separator = ';';
+		else
+			separator = ',';
+		return separator;
+	}
+
+	private static string[] ParseLine(string sLine, char colSeparator)
+	{
+		StringBuilder sTemp = new StringBuilder();
+
+		List<string> Parts = new List<string>();
+		bool _stringSection = false;
+		bool _escapeQuote = false;
+
+		bool _prevCharIsQuote = false;
+		bool _realCharFound = false;
+		bool _ignoreExtraQuote = false;
+		int pos = 0;
+		foreach (char c in sLine)
+		{
+			switch (c)
+			{
+				case '"':
+
+					if (pos + 1 < sLine.Length)
+					{
+						if (sLine[pos + 1] == '"' /*&& _escapeQuote*/)
+						{
+							//see this char as a real char
+
+							// "" is ", """" is ""
+							if (!_ignoreExtraQuote)
+							{
+								//check for ,"",  or "", or ,""
+								bool emptyString = false;
+								if (pos + 2 < sLine.Length)
+								{
+									if (sLine[pos + 2] == colSeparator)
+									{
+										if (pos - 1 <= 0 || sLine[pos - 1] == colSeparator)
+										{
+											//we have ,"",  or (start) "",
+											//Empty
+											emptyString = true;
+										}
+
+									}
+								}
+								else
+								{
+									// ,"" (end)
+									emptyString = true;
+								}
+								if (!emptyString)
+								{
+									sTemp.Append(c);
+								}
+								_ignoreExtraQuote = true;
+							}
+							else
+							{
+								_ignoreExtraQuote = false;
+
+
+							}
+							_escapeQuote = false;
+							_prevCharIsQuote = false;
+							_realCharFound = true;
+						}
+					}
+
+					if (_escapeQuote && _realCharFound)
+						sTemp.Append(c);
+					else
+						_stringSection = !_stringSection;
+
+
+					_escapeQuote = !_escapeQuote;
+
+					_prevCharIsQuote = true;
+					_realCharFound = false;
+
+					break;
+
+				default:
+
+					if (c == colSeparator && !_stringSection)
+					{
+						Parts.Add(sTemp.ToString());
+						sTemp.Clear();
+						if (_prevCharIsQuote)
+							_escapeQuote = false;
+						break;
+					}
+
+					sTemp.Append(c);
+
+					_escapeQuote = false;
+					_prevCharIsQuote = false;
+					_realCharFound = true;
+
+					_ignoreExtraQuote = false;
+					break;
+			}
+			pos++;
+		}
+
+		Parts.Add(sTemp.ToString());
+
+		return Parts.ToArray();
+	}
+
+}
+
+public class Entity
+{
+	public string name { get; set; }
+	public string ip { get; set; }
+	public string getString { get; set; }
+	public string setString { get; set; }
+	public string model { get; set; }
+	public string station { get; set; }
+	public string city { get; set; }
+	public string state { get; set; }
+	public string subRegion { get; set; }
+	public string superRegion { get; set; }
+}
+
+public class Data
+{
+	public List<Entity> entities { get; set; }
+}
+
+public class RootObject
+{
+	public string operationType { get; set; }
+	public string scope { get; set; }
+	public string userSession { get; set; }
+	public string username { get; set; }
+	public string cpeFe { get; set; }
+	public Data data { get; set; }
+}]]>
+	  </QAction>
+		<QAction id="18" name="buttonDelete" encoding="csharp" triggers="18">
+			<![CDATA[using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
+
+using Skyline.DataMiner.Scripting;
+
+/// <summary>
+/// DataMiner QAction Class: QActionName.
+/// </summary>
+public class QAction
+{
+	/// <summary>
+	/// The QAction entry point.
+	/// </summary>
+	/// <param name="protocol">Link with SLProtocol process.</param>
+	public static void Run(SLProtocol protocol)
+	{
+		try
+		{
+			object[] timeColumn = (object[])(
+				(object[])protocol.NotifyProtocol
+				(321, Parameter.Dslamrhbacklog.tablePid, new UInt32[] { Parameter.Dslamrhbacklog.Idx.executiontime }))[0];
+
+			DateTime now = DateTime.Now;
+			double really = now.ToOADate();
+			really = really * 100000;
+
+			for (int x = 0; x < timeColumn.Length; x++)
+			{
+				double test = (double)timeColumn[x];
+				test = test * 100000;
+				protocol.Log(test + "\n");
+				protocol.Log(really + "\n");
+				protocol.Log((really - test) + "\n");
+				//if (now - (DateTime)timeColumn[x] > diff)
+				//{
+				//	protocol.DeleteRow(Parameter.Dslamrhbacklog.tablePid, x + 1);
+				//}
+			}
+		}
+		catch (Exception ex)
+		{
+			protocol.Log("QA" + protocol.QActionID + "|" + protocol.GetTriggerParameter() + "|Run|Exception thrown:" + Environment.NewLine + ex, LogType.Error, LogLevel.NoLogging);
+		}
+	}
+}]]>
+		</QAction>
+	</QActions>
+
+	<Groups>
+	</Groups>
+
+	<Triggers>
+		<Trigger id="1">
+			<Name>clear</Name>
+			<On id="19">parameter</On>
+			<Time>change</Time>
+			<Type>action</Type>
+			<Content>
+				<Id>1</Id>
+			</Content>
+		</Trigger>
+	</Triggers>
+
+	<Actions>
+		<Action id="1">
+			<Name>After Startup Group</Name>
+			<On id="10">parameter</On>
+			<Type>clear</Type>
+		</Action>
+	</Actions>
+
+  <Timers>
+    <Timer id="1">
+      <Name>Fast Timer (10s)</Name>
+      <Time initial="true">10000</Time>
+      <Interval>75</Interval>
+      <Content>
+      </Content>
+    </Timer>
+    <Timer id="2">
+      <Name>Medium Timer (1m)</Name>
+      <Time initial="true" dataDisplay="30000">60000</Time>
+      <Interval>75</Interval>
+      <Content>
+      </Content>
+    </Timer>
+    <Timer id="3">
+      <Name>Slow Timer (1h)</Name>
+      <Time initial="true">3600000</Time>
+      <Interval>75</Interval>
+      <Content>
+      </Content>
+    </Timer>
+  </Timers>
+
+  <PortSettings>
+  </PortSettings>
+
+</Protocol>

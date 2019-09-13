@@ -1,0 +1,698 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DMSScript options="272" xmlns="http://www.skyline.be/automation">
+	<Name>DSLAM RH OnExecute</Name>
+	<Description>DSLAM Record Handler OnExecute Controller</Description>
+	<Type>Automation</Type>
+	<Author>SKYLINE2\Rene</Author>
+	<CheckSets>FALSE</CheckSets>
+	<Folder>DSLAM</Folder>
+	
+	<Protocols>
+	</Protocols>
+	
+	<Memory>
+	</Memory>
+	
+	<Parameters>
+		<ScriptParameter id="2" type="string" values="">
+			<Description>HandlerId</Description>
+		</ScriptParameter>
+		<ScriptParameter id="3" type="string" values="">
+			<Description>ListenerId</Description>
+		</ScriptParameter>
+		<ScriptParameter id="4" type="string" values="">
+			<Description>Operation</Description>
+		</ScriptParameter>
+		<ScriptParameter id="5" type="string" values="">
+			<Description>OperationData</Description>
+		</ScriptParameter>
+		<ScriptParameter id="6" type="string" values="">
+			<Description>Scope</Description>
+		</ScriptParameter>
+		<ScriptParameter id="7" type="string" values="">
+			<Description>Name</Description>
+		</ScriptParameter>
+		<ScriptParameter id="8" type="string" values="">
+			<Description>IP</Description>
+		</ScriptParameter>
+		<ScriptParameter id="9" type="string" values="">
+			<Description>ReadString</Description>
+		</ScriptParameter>
+		<ScriptParameter id="10" type="string" values="">
+			<Description>WriteString</Description>
+		</ScriptParameter>
+		<ScriptParameter id="11" type="string" values="">
+			<Description>Model</Description>
+		</ScriptParameter>
+		<ScriptParameter id="12" type="string" values="">
+			<Description>Station</Description>
+		</ScriptParameter>
+		<ScriptParameter id="13" type="string" values="">
+			<Description>City</Description>
+		</ScriptParameter>
+		<ScriptParameter id="14" type="string" values="">
+			<Description>State</Description>
+		</ScriptParameter>
+		<ScriptParameter id="15" type="string" values="">
+			<Description>SubRegion</Description>
+		</ScriptParameter>
+		<ScriptParameter id="16" type="string" values="">
+			<Description>SuperRegion</Description>
+		</ScriptParameter>
+		<ScriptParameter id="17" type="string" values="">
+			<Description>UserSession</Description>
+		</ScriptParameter>
+		<ScriptParameter id="18" type="string" values="">
+			<Description>UserName</Description>
+		</ScriptParameter>
+		<ScriptParameter id="19" type="string" values="">
+			<Description>CpeFe</Description>
+		</ScriptParameter>
+	</Parameters>
+	
+	<Script>
+        <Exe id="1" type="csharp">
+            <Value>
+            <![CDATA[/*
+****************************************************************************
+*  Copyright (c) 2019,  Skyline Communications NV  All Rights Reserved.    *
+****************************************************************************
+
+By using this script, you expressly agree with the usage terms and
+conditions set out below.
+This script and all related materials are protected by copyrights and
+other intellectual property rights that exclusively belong
+to Skyline Communications.
+
+A user license granted for this script is strictly for personal use only.
+This script may not be used in any way by anyone without the prior
+written consent of Skyline Communications. Any sublicensing of this
+script is forbidden.
+
+Any modifications to this script by the user are only allowed for
+personal use and within the intended purpose of the script,
+and will remain the sole responsibility of the user.
+Skyline Communications will not be responsible for any damages or
+malfunctions whatsoever of the script resulting from a modification
+or adaptation by the user.
+
+The content of this script is confidential information.
+The user hereby agrees to keep this confidential information strictly
+secret and confidential and not to disclose or reveal it, in whole
+or in part, directly or indirectly to any person, entity, organization
+or administration without the prior written consent of
+Skyline Communications.
+
+Any inquiries can be addressed to:
+
+	Skyline Communications NV
+	Ambachtenstraat 33
+	B-8870 Izegem
+	Belgium
+	Tel.	: +32 51 31 35 69
+	Fax.	: +32 51 31 01 29
+	E-mail	: info@skyline.be
+	Web		: www.skyline.be
+	Contact	: Ben Vandenberghe
+
+****************************************************************************
+Revision History:
+
+DATE		VERSION		AUTHOR			COMMENTS
+
+dd/mm/2019	1.0.0.1		XXX, Skyline	Initial Version
+****************************************************************************
+*/
+
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
+using Skyline.DataMiner.Automation;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using System.IO;
+using System.Text;
+using System.Linq;
+using System.ComponentModel;
+
+
+/// <summary>
+/// DataMiner Script Class.
+/// </summary>
+class Script
+{
+	/// <summary>
+	/// The Script entry point.
+	/// </summary>
+	/// <param name="engine">Link with SLScripting process.</param>
+	public void Run(Engine engine)
+	{
+		PublicParameters Params = new PublicParameters(engine);
+
+
+		switch (Params.Operation)
+		{
+			case "Add":
+				handleAddOperation(Params);
+				break;
+			case "Update":
+				handleUpdateOperation(Params);
+				break;
+			case "Delete":
+				handleDeleteOperation(Params);
+				break;
+		}
+	}
+
+	public void handleAddOperation(PublicParameters Params)
+	{
+		switch (Params.Scope)
+		{
+			case "Single":
+				handleAddSingle(Params);
+				break;
+			case "Bulk":
+				handleAddBulk(Params);
+				break;
+		}
+	}
+
+	public void handleAddSingle(PublicParameters Params)
+	{
+		if (CheckForErrors(Params))
+		{
+			string json = SerializeSingle(Params);
+		}
+
+		else
+		{
+			//Print Error Message
+		}
+	}
+
+	public void handleAddBulk(PublicParameters Params)
+	{
+		if (CheckForErrors(Params))
+		{
+			//Serialize JSON
+		}
+
+		else
+		{
+			//Print Error Message
+		}
+	}
+
+	public void handleUpdateOperation(PublicParameters Params)
+	{
+		switch (Params.Scope)
+		{
+			case "Single":
+				handleUpdateSingle(Params);
+				break;
+			case "Bulk":
+				handleUpdateBulk(Params);
+				break;
+		}
+	}
+
+	public void handleUpdateSingle(PublicParameters Params)
+	{
+
+	}
+
+	public void handleUpdateBulk(PublicParameters Params)
+	{
+
+	}
+
+	public void handleDeleteOperation(PublicParameters Params)
+	{
+
+	}
+
+	public bool CheckForErrors(PublicParameters Params)
+	{
+		Boolean valid = true;
+
+		if (String.IsNullOrEmpty(Params.Name) || Params.Name.Equals("EMPTY"))
+		{
+			valid = false;
+			Params.Error.Append("\tParameter 1 (i.e. Name): May not be EMPTY\n");
+		}
+
+		else if (!NameNotDuplicated(Params))
+		{
+			valid = false;
+		}
+
+		if (String.IsNullOrEmpty(Params.IP) || Params.IP.Equals("EMPTY"))
+		{
+			valid = false;
+			Params.Error.Append("\tParameter 2 (i.e. IP): May not be EMPTY\n");
+		}
+
+		else if(!IsIPValid(Params.IP))
+		{
+			valid = false;
+			Params.Error.Append("\tParameter 2 (i.e. IP): Is not a valid IPv4 or IPv6\n");
+		}
+
+		if (String.IsNullOrEmpty(Params.Model) || Params.Model.Equals("EMPTY"))
+		{
+			valid = false;
+			Params.Error.Append("\tParameter 3 (i.e. Model): May not be EMPTY\n");
+		}
+		if (String.IsNullOrEmpty(Params.Station) || Params.Station.Equals("EMPTY"))
+		{
+			valid = false;
+			Params.Error.Append("\tParameter 4 (i.e. Station): May not be EMPTY\n");
+		}
+		if (String.IsNullOrEmpty(Params.City) || Params.City.Equals("EMPTY"))
+		{
+			valid = false;
+			Params.Error.Append("\tParameter 5 (i.e. City): May not be EMPTY\n");
+		}
+		if (String.IsNullOrEmpty(Params.State) || Params.State.Equals("EMPTY"))
+		{
+			valid = false;
+			Params.Error.Append("\tParameter 6 (i.e. State): May not be EMPTY\n");
+		}
+		if (String.IsNullOrEmpty(Params.SubRegion) || Params.SubRegion.Equals("EMPTY"))
+		{
+			valid = false;
+			Params.Error.Append("\tParameter 7 (i.e. SubRegion): May not be EMPTY\n");
+		}
+		if (String.IsNullOrEmpty(Params.SuperRegion) || Params.SuperRegion.Equals("EMPTY"))
+		{
+			valid = false;
+			Params.Error.Append("\tParameter 8 (i.e. SuperRegion): May not be EMPTY\n");
+		}
+
+
+		return valid;
+	}
+
+	public bool IsIPValid(string ip)
+	{
+		Boolean valid = false;
+		String re_ipv4 = "((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])";
+		String re_ipv6 = "(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))";
+		Regex ipv4 = new Regex(re_ipv4);
+		Regex ipv6 = new Regex(re_ipv6);
+
+		MatchCollection matches = ipv4.Matches(ip);
+		MatchCollection match = ipv6.Matches(ip);
+
+		if (matches.Count > 0 || match.Count > 0)
+			valid = true;
+
+		return valid;
+	}
+
+	public bool NameNotDuplicated(PublicParameters Params)
+	{
+		Boolean valid = true;
+		Boolean duplicate = false;
+		string file = AddUnderscore(Params.CPE_FE_ID) + Params.FileTail;
+
+		foreach (var line in CSVImport.GetFileData(Params.FileHeader, file))
+		{
+			object[] Row = null;
+
+			Row = new object[10];
+
+			string[] Cells = CSVImport.SplitCSVRow(line);
+
+			if (Cells[0].Equals(Params.Name))
+			{
+				valid = false;
+				duplicate = true;
+				
+			}
+		}
+
+		if (Params.Operation.Equals("Add"))
+		{
+			if(!valid)
+			{
+				Params.Error.Append("\tParameter 1 (i.e. Name): Already Exists\n");
+			}
+
+			return valid;
+		}
+
+		else
+		{
+			if(!duplicate)
+			{
+				Params.Error.Append("\tParameter 1 (i.e. Name): Does not exist\n");
+			}
+			return duplicate;
+		}
+	}
+
+	public string SerializeSingle(PublicParameters Params)
+	{
+		List<Entity> entities = new List<Entity>();
+
+		entities.Add(new Entity
+		{
+			name = Params.Name,
+			ip = Params.IP,
+			setString = Params.SetString,
+			getString = Params.GetString,
+			model = Params.Model,
+			station = Params.Station,
+			city = Params.City,
+			state = Params.State,
+			subRegion = Params.SubRegion,
+			superRegion = Params.SuperRegion
+		});
+
+		RootObject root = new RootObject
+		{
+			operationType = Params.Operation,
+			scope = Params.Scope,
+			userSession = Params.UserSession,
+			username = Params.UserName,
+			cpeFe = Params.CPE_FE_ID,
+			data = entities
+		};
+
+		return JsonConvert.SerializeObject(root, Formatting.Indented);
+	}
+
+	public string SerializeBulk(PublicParameters Params, string input)
+	{
+		string[] numLines = input.Split('\n');
+		numLines = numLines.Skip(1).ToArray();
+		char[] delimiters = { ',', ';' };
+		List<Entity> entities = new List<Entity>();
+
+		foreach (string line in numLines)
+		{
+			string[] tokens = line.Split(delimiters);
+			entities.Add(new Entity
+			{
+				name = tokens[0],
+				ip = tokens[1],
+				getString = tokens[2],
+				setString = tokens[3],
+				model = tokens[4],
+				station = tokens[5],
+				city = tokens[6],
+				state = tokens[7],
+				subRegion = tokens[8],
+				superRegion = tokens[9]
+			});
+		}
+		
+
+		RootObject root = new RootObject
+		{
+			operationType = Params.Operation,
+			scope = Params.Scope,
+			userSession = Params.UserSession,
+			username = Params.UserName,
+			cpeFe = Params.CPE_FE_ID,
+			data = entities
+		};
+
+		return JsonConvert.SerializeObject(root, Formatting.Indented);
+	}
+
+	public string AddUnderscore(string fileID)
+	{
+		return fileID.Replace('/', '_');
+	}
+
+	public bool CheckBulkFormat (string input)
+	{
+		Boolean valid = true;
+
+		TextReader read = new System.IO.StringReader(input);
+
+		while (read.Peek() != 0)
+		{
+			string line = read.ReadLine();
+			char[] delimiters = { ',', ';' };
+			int count = line.Split(delimiters).Length - 1;
+
+			if (count != 9)
+				valid = false;
+		}
+
+		return valid;
+	}
+
+	#region Public Parameters
+	public class PublicParameters
+	{
+		public string Operation { get; set; }
+		public string Scope { get; set; }
+		public string UserSession { get; set; }
+		public string UserName { get; set; }
+		public string Name { get; set; }
+		public string IP { get; set; }
+		public string GetString { get; set; }
+		public string SetString { get; set; }
+		public string Model { get; set; }
+		public string Station { get; set; }
+		public string City { get; set; }
+		public string State { get; set; }
+		public string SubRegion { get; set; }
+		public string SuperRegion { get; set; }
+		public string CPE_FE_ID { get; set; }
+		public StringBuilder Error { get; set; }
+		public string FileHeader { get; set; }
+		public string FileTail { get; set; }
+
+		public PublicParameters(Engine engine)
+		{
+			Operation = engine.GetScriptParam("Operation").ToString();
+			Scope = engine.GetScriptParam("Scope").ToString();
+			UserSession = engine.GetScriptParam("UserSession").ToString();
+			UserName = engine.GetScriptParam("UserName").ToString();
+			Name = engine.GetScriptParam("Name").ToString();
+			IP = engine.GetScriptParam("IP").ToString();
+			getString = engine.GetScriptParam("ReadString").ToString();
+			setString = engine.GetScriptParam("WriteString").ToString();
+			Model = engine.GetScriptParam("Model").ToString();
+			Station = engine.GetScriptParam("Station").ToString();
+			City = engine.GetScriptParam("City").ToString();
+			State = engine.GetScriptParam("State").ToString();
+			SubRegion = engine.GetScriptParam("SubRegion").ToString();
+			SuperRegion = engine.GetScriptParam("SuperRegion").ToString();
+			CPE_FE_ID = engine.GetScriptParam("CpeFe").ToString();
+			Error = new StringBuilder();
+			Error.Append("Execution failed! Please, verify below and try again:\n");
+			FileHeader = "C:\\Skyline DataMiner\\Documents\\Oi Brazil DSLAM Collector\\DEV";
+			FileTail = "_OBDC.csv";
+		}
+	}
+	#endregion
+
+	public class Entity
+	{
+		public string name { get; set; }
+		public string ip { get; set; }
+		public string getString { get; set; }
+		public string setString { get; set; }
+		public string model { get; set; }
+		public string station { get; set; }
+		public string city { get; set; }
+		public string state { get; set; }
+		public string subRegion { get; set; }
+		public string superRegion { get; set; }
+	}
+
+	public class Data
+	{
+		public List<Entity> entities { get; set; }
+	}
+
+	public class RootObject
+	{
+		public string operationType { get; set; }
+		public string scope { get; set; }
+		public string userSession { get; set; }
+		public string username { get; set; }
+		public string cpeFe { get; set; }
+		public Data data { get; set; }
+	}
+
+	public class CSVImport
+	{
+
+		/// <summary>
+		/// read all the rows in the CSV
+		/// </summary>
+		/// <param name="Path">Path of the csv file</param>
+		/// <param name="FileName">Name of the csv file</param>
+		/// <returns>list of all the rows in the csv</returns>
+		public static IEnumerable<string> GetFileData(string Path, string FileName)
+		{
+			List<string> AllLines = new List<string>();
+			FileName = FileName.Substring(0, FileName.LastIndexOf('.')) + ".csv";
+			string Location = Path + "\\" + FileName;
+			if (System.IO.File.Exists(Location))
+			{
+				//make sure it can be opened even if its used by another process
+				using (System.IO.FileStream logReader = new FileStream(Location, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+				{
+					//read the file with encoding => used for chars like 'é'
+					using (StreamReader sr = new StreamReader(logReader, System.Text.Encoding.Default))
+					{
+						while (!sr.EndOfStream)
+						{
+							yield return sr.ReadLine();
+							//AllLines.Add(sr.ReadLine()); 
+						}
+					}
+				}
+			}
+			//	return AllLines;
+		}
+		/// <summary>
+		/// splits the columns in the csv independed of ';' or ',' separator
+		/// </summary>
+		/// <param name="Row">the row</param>
+		/// <param name="separator">the used separator</param>
+		/// <returns>array of column data in the row</returns>
+		public static string[] SplitCSVRow(string Row)
+		{
+			//detect the column separator
+			char separator = GetUsedSeparator(Row);
+			string[] Values = ParseLine(Row, separator);
+
+			return Values;
+		}
+		public static char GetUsedSeparator(string Row)
+		{
+			char separator = ';';
+			if (Row.Count(c => c == ';') > Row.Count(c => c == ','))
+				separator = ';';
+			else
+				separator = ',';
+			return separator;
+		}
+
+		private static string[] ParseLine(string sLine, char colSeparator)
+		{
+			StringBuilder sTemp = new StringBuilder();
+
+			List<string> Parts = new List<string>();
+			bool _stringSection = false;
+			bool _escapeQuote = false;
+
+			bool _prevCharIsQuote = false;
+			bool _realCharFound = false;
+			bool _ignoreExtraQuote = false;
+			int pos = 0;
+			foreach (char c in sLine)
+			{
+				switch (c)
+				{
+					case '"':
+
+						if (pos + 1 < sLine.Length)
+						{
+							if (sLine[pos + 1] == '"' /*&& _escapeQuote*/)
+							{
+								//see this char as a real char
+
+								// "" is ", """" is ""
+								if (!_ignoreExtraQuote)
+								{
+									//check for ,"",  or "", or ,""
+									bool emptyString = false;
+									if (pos + 2 < sLine.Length)
+									{
+										if (sLine[pos + 2] == colSeparator)
+										{
+											if (pos - 1 <= 0 || sLine[pos - 1] == colSeparator)
+											{
+												//we have ,"",  or (start) "",
+												//Empty
+												emptyString = true;
+											}
+
+										}
+									}
+									else
+									{
+										// ,"" (end)
+										emptyString = true;
+									}
+									if (!emptyString)
+									{
+										sTemp.Append(c);
+									}
+									_ignoreExtraQuote = true;
+								}
+								else
+								{
+									_ignoreExtraQuote = false;
+
+
+								}
+								_escapeQuote = false;
+								_prevCharIsQuote = false;
+								_realCharFound = true;
+							}
+						}
+
+						if (_escapeQuote && _realCharFound)
+							sTemp.Append(c);
+						else
+							_stringSection = !_stringSection;
+
+
+						_escapeQuote = !_escapeQuote;
+
+						_prevCharIsQuote = true;
+						_realCharFound = false;
+
+						break;
+
+					default:
+
+						if (c == colSeparator && !_stringSection)
+						{
+							Parts.Add(sTemp.ToString());
+							sTemp.Clear();
+							if (_prevCharIsQuote)
+								_escapeQuote = false;
+							break;
+						}
+
+						sTemp.Append(c);
+
+						_escapeQuote = false;
+						_prevCharIsQuote = false;
+						_realCharFound = true;
+
+						_ignoreExtraQuote = false;
+						break;
+				}
+				pos++;
+			}
+
+			Parts.Add(sTemp.ToString());
+
+			return Parts.ToArray();
+		}
+
+	}
+}]]>
+			</Value>
+            <!--<Param type="using">ADD_A_NAMESPACE_HERE</Param>-->
+            <Param type="ref">Newtonsoft.Json.dll</Param>
+            <!--<Param type="debug">true</Param>-->
+			<Message>$scriptMessage$</Message>
+		</Exe>
+	</Script>
+
+</DMSScript>
